@@ -22,9 +22,16 @@ use ValueParsers\Test\StringValueParserTest;
 class GlobeCoordinateParserTest extends StringValueParserTest {
 
 	/**
-	 * @see ValueParserTestBase::validInputProvider
+	 * @see ValueParserTestBase::getParserClass
 	 *
-	 * @since 0.1
+	 * @return string
+	 */
+	protected function getParserClass() {
+		return 'DataValues\Geo\Parsers\GlobeCoordinateParser';
+	}
+
+	/**
+	 * @see ValueParserTestBase::validInputProvider
 	 *
 	 * @return array
 	 */
@@ -248,18 +255,13 @@ class GlobeCoordinateParserTest extends StringValueParserTest {
 			array( '1°3\'5.0001" 2°4\'6.0001"', 1 / 36000000 ),
 			array( '1°3\'5.00001" 2°4\'6.00001"', 1 / 3600 ),
 			array( '1°3\'5.55555" 2°4\'6.55555"', 1 / 36000000 ),
-		);
-	}
 
-	/**
-	 * @see ValueParserTestBase::getParserClass
-	 *
-	 * @since 0.1
-	 *
-	 * @return string
-	 */
-	protected function getParserClass() {
-		return 'DataValues\Geo\Parsers\GlobeCoordinateParser';
+			/**
+			 * @fixme What do the users expect in this case, 1/3600 or 1/360000?
+			 * @see https://bugzilla.wikimedia.org/show_bug.cgi?id=64820
+			 */
+			array( '47°42\'0.00"N, 15°27\'0.00"E', 1 / 3600 ),
+		);
 	}
 
 }
